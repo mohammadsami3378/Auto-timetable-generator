@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+
+    function isValidTimetable(data) {
+      return data.keys().hasAll(['id', 'name', 'createdAt', 'userId', 'config', 'grid']) &&
+             data.id is string &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.createdAt is number &&
+             data.userId == request.auth.uid;
+    }
+
+    match /timetables/{timetableId} {
+      allow read: if isDocOwner();
+      allow create: if isAuthenticated() && isValidTimetable(request.resource.data);
+      allow update: if isDocOwner() && isValidTimetable(request.resource.data);
+      allow delete: if isDocOwner();
+    }
+  }
+}

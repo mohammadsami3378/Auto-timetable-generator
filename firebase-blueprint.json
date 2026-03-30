@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "timetables": {
+      "title": "Timetable",
+      "description": "A generated timetable schedule.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "userId": { "type": "string" },
+        "config": { "type": "object" },
+        "grid": { "type": "object" }
+      },
+      "required": ["id", "name", "createdAt", "userId", "config", "grid"]
+    }
+  },
+  "firestore": {
+    "/timetables/{timetableId}": {
+      "schema": "timetables",
+      "description": "Collection of generated timetables."
+    }
+  }
+}

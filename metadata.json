@@ -1,0 +1,5 @@
+{
+  "name": "AutoSched: AI Time Table Generator",
+  "description": "A smart, constraint-based scheduling application that generates optimized timetables for schools and universities.",
+  "requestFramePermissions": []
+}
